@@ -17,6 +17,7 @@ import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect'
 import createHistory from 'react-router/lib/createMemoryHistory'
 import {Provider} from 'react-redux'
 import getRoutes from './routes'
+import applyMiddleware from 'middlewares'
 
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort
 const pretty = new PrettyError()
@@ -31,6 +32,8 @@ app.use(compression())
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')))
 
 app.use(Express.static(path.join(__dirname, '..', 'static')))
+
+applyMiddleware(app)
 
 // Proxy to API server
 app.use('/api', (req, res) => {
