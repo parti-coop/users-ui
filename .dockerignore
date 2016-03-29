@@ -1,0 +1,10 @@
+*.log
+*.md
+.*
+!.babelrc
+Dockerfile
+deploy
+karma.conf.js
+node_modules
+test
+tests.webpack.js
