@@ -1,6 +1,6 @@
 import axios from 'axios'
 import health_check from 'express-healthcheck'
-import { auth_api_url } from 'utils/auth-url'
+import { users_api_url } from 'utils/parti-url'
 
 function applyMiddlewares(app) {
   applyHealthCheck(app)
@@ -13,14 +13,14 @@ function applyHealthCheck(app) {
       { 'api-host': 'success' }
     ),
     test: done => {
-      const auth_url = auth_api_url('/health_check')
-      console.log(`Checking ${auth_url}`)
-      axios.get(auth_url)
+      const api_url = users_api_url('/health_check')
+      console.log(`Checking ${api_url}`)
+      axios.get(api_url)
         .then(({ data }) => {
           if (data === 'success') {
             done()
           } else {
-            done('health_check auth-api failed')
+            done('health_check users-api failed')
           }
         })
         .catch(err => {
