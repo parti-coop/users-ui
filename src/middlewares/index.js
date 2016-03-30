@@ -14,13 +14,13 @@ function applyHealthCheck(app) {
     ),
     test: done => {
       const api_url = users_api_url('/health_check')
-      console.log(`Checking ${api_url}`)
+      console.log(`Health-check: ${api_url}`)
       axios.get(api_url)
         .then(({ data }) => {
           if (data === 'success') {
             done()
           } else {
-            done('health_check users-api failed')
+            done('Health-check: users-api failed')
           }
         })
         .catch(err => {

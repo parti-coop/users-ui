@@ -9,8 +9,9 @@ import './support/setup-mocha'
 
 describe('UI server', () => {
   it('is up', done => {
-    console.log(users_ui_url('/health-check'))
-    axios.get(users_ui_url('/health-check'))
+    const url = users_ui_url('/health-check')
+    console.log('Smoke-test: ' + url)
+    axios.get(url)
       .then(response => {
         expect(response.status).to.equal(200)
         expect(response.data['api-host']).to.equals('success')
@@ -26,6 +27,7 @@ describe('UI server', () => {
 describe('API server', () => {
   it('is up', done => {
     const url = users_api_url('/health_check')
+    console.log('Smoke-test: ' + url)
 
     axios.get(url)
       .then(({ data }) => {
@@ -48,7 +50,7 @@ describe('browser', () => {
     browser.end().then(() => { done() })
   })
 
-  it ('connects to auth-ui', function*() {
+  it ('connects to users-ui', function*() {
     const url = users_ui_url('/')
     const current_url = yield browser.goto(url).url()
 
