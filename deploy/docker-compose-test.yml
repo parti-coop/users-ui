@@ -1,0 +1,30 @@
+auth-api:
+  environment:
+    - DB_USER=postgres
+    - RAILS_ENV=test
+  image: partixyz/auth-api:0.3.1-0-g5ce8bd9
+  links:
+    - db:auth-db
+db:
+  image: postgres:9.4
+  ports:
+    - 5432:5432
+users-api:
+  environment:
+    - DB_USER=postgres
+    - RAILS_ENV=test
+  image: partixyz/users-api:0.2.0-2-gf02c4de
+  links:
+    - db:users-db
+  ports:
+    - 3030:3030
+users-ui:
+  environment:
+    - APIHOST=users-api
+    - APIPORT=3030
+    - RAILS_ENV=test
+  image: partixyz/users-ui:current
+  links:
+    - users-api
+  ports:
+    - 8080:8080
