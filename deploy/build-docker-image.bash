@@ -17,3 +17,4 @@ DOCKER_REPO=partixyz/users-ui
 USERS_UI_VERSION=${USERS_UI_VERSION:-$( git describe --tags --long )}
 
 docker build -t ${DOCKER_REPO}:${USERS_UI_VERSION} ${SCRIPT_DIR}/..
+docker tag ${DOCKER_REPO}:${USERS_UI_VERSION} $DOCKER_REPO:current
