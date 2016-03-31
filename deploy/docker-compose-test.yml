@@ -5,6 +5,8 @@ auth-api:
   image: partixyz/auth-api:0.3.1-2-g6b80b7b
   links:
     - db:auth-db
+  ports:
+    - 3031:3030
 db:
   image: postgres:9.4
   ports:
@@ -13,9 +15,10 @@ users-api:
   environment:
     - DB_USER=postgres
     - RAILS_ENV=test
-  image: partixyz/users-api:0.2.0-2-gf02c4de
+  image: partixyz/users-api:0.2.0-5-g7fd4373
   links:
     - db:users-db
+    - auth-api
   ports:
     - 3030:3030
 users-ui:
