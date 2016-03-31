@@ -29,7 +29,7 @@ export default class App extends Component {
     return (
       <div className={styles.app}>
         <Helmet {...config.app.head}/>
-        <Navbar fixedTop>
+        <Navbar>
           <Navbar.Header>
             <Navbar.Brand>
               <IndexLink to="/" activeStyle={{color: '#33e0ff'}}>
@@ -42,8 +42,11 @@ export default class App extends Component {
 
           <Navbar.Collapse eventKey={0}>
             <Nav navbar>
+              <LinkContainer to="/sign-up">
+                <NavItem eventKey={1}>Sign Up</NavItem>
+              </LinkContainer>
               <LinkContainer to="/about">
-                <NavItem eventKey={4}>About Us</NavItem>
+                <NavItem eventKey={2}>About Us</NavItem>
               </LinkContainer>
             </Nav>
             <Nav navbar pullRight>
@@ -56,13 +59,6 @@ export default class App extends Component {
 
         <div className={styles.appContent}>
           {this.props.children}
-        </div>
-
-        <div className="well text-center">
-          Have questions? Ask for help <a
-          href="https://github.com/erikras/react-redux-universal-hot-example/issues"
-          target="_blank">on Github</a> or in the <a
-          href="https://discord.gg/0ZcbPKXt5bZZb1Ko" target="_blank">#react-redux-universal</a> Discord channel.
         </div>
       </div>
     )

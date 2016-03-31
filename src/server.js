@@ -11,6 +11,7 @@ import ApiClient from './helpers/ApiClient'
 import Html from './helpers/Html'
 import PrettyError from 'pretty-error'
 import http from 'http'
+import R from 'ramda'
 
 import { match } from 'react-router'
 import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect'
@@ -18,6 +19,7 @@ import createHistory from 'react-router/lib/createMemoryHistory'
 import {Provider} from 'react-redux'
 import getRoutes from './routes'
 import applyMiddleware from 'middlewares'
+import { users_ui_client_credential_token } from './helpers/auth-client'
 
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort
 const pretty = new PrettyError()
@@ -37,7 +39,9 @@ applyMiddleware(app)
 
 // Proxy to API server
 app.use('/api', (req, res) => {
-  proxy.web(req, res, {target: targetUrl})
+  users_ui_client_credential_token().then(token => {
+    proxy.web(req, res, { token })
+  })
 })
 
 app.use('/ws', (req, res) => {
@@ -46,6 +50,12 @@ app.use('/ws', (req, res) => {
 
 server.on('upgrade', (req, socket, head) => {
   proxy.ws(req, socket, head)
+})
+
+proxy.on('proxyReq', (proxyReq, req, res, options) => {
+  if (R.path(['token', 'access_token'], options)) {
+    proxyReq.setHeader('Authorization', `Bearer ${options.token.access_token}`)
+  }
 })
 
 // added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527

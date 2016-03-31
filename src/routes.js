@@ -4,6 +4,8 @@ import {
     App,
     Home,
     About,
+    SignUpConfirmationSentView,
+    SignUpView,
     NotFound,
   } from 'containers'
 
@@ -18,7 +20,8 @@ export default (store) => {
 
       { /* Routes */ }
       <Route path="about" component={About}/>
-
+      <Route path="sign-up" component={SignUpView}/>
+      <Route path="sign-up-confirmation-sent" component={SignUpConfirmationSentView}/>
       { /* Catch all route */ }
       <Route path="*" component={NotFound} status={404} />
     </Route>
