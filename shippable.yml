@@ -1,0 +1,40 @@
+language: node_js
+
+node_js:
+  - 5.6
+
+env:
+  global:
+    - USERS_UI_REPO=partixyz/users-ui
+
+before_install:
+  - sudo apt-get -y update
+  - sudo apt-get -y install libpq-dev
+  - apt-get -y install python-dev
+  - sudo pip install -U docker-compose
+  - export APP_VERSION=$( git describe  --tags --long || echo ${COMMIT::12} )
+
+before_script:
+  - docker-compose -f deploy/docker-compose-test.yml up -d db
+  - DB_CONTAINER=$( docker-compose -f deploy/docker-compose-test.yml ps -q db )
+  - docker-compose -f deploy/docker-compose-test.yml run --rm auth-api bin/rails db:setup
+  - docker-compose -f deploy/docker-compose-test.yml up -d auth-api
+  - docker-compose -f deploy/docker-compose-test.yml run --rm users-api bin/rails db:setup
+  - docker-compose -f deploy/docker-compose-test.yml up -d users-api
+  - USERS_API_CONTAINER=$( docker-compose -f deploy/docker-compose-test.yml ps -q users-api )
+  - export APIHOST=$( docker inspect --format '{{ .NetworkSettings.IPAddress }}' $USERS_API_CONTAINER )
+  - export APIPORT=3030
+
+script:
+  - docker build -t $USERS_UI_REPO:$APP_VERSION .
+  - docker tag -t $USERS_UI_REPO:$APP_VERSION $USERS_UI_REPO:current
+  - docker-compose -f deploy/docker-compose-test.yml up -d users-ui
+  - npm run test-e2e
+
+after_success:
+  - docker push $USERS_UI_REPO:$APP_VERSION
+
+integrations:
+  hub:
+    - integrationName: partixyz
+      type: docker 
