@@ -4,6 +4,8 @@ import axios from 'axios'
 import qs from 'qs'
 import normalize_url from 'normalize-url'
 
+import { auth_api_url } from '../utils/parti-url'
+
 const users_ui_client = {
   client_id: process.env.USERS_UI_CLIENT_ID,
   client_secret: process.env.USERS_UI_CLIENT_SECRET
@@ -55,16 +57,4 @@ export function client_credential_token({ client_id, client_secret }) {
     }
     return token
   })
-}
-
-function auth_api_host() {
-  return process.env.AUTH_API_HOST || 'auth-api'
-}
-
-function auth_api_port() {
-  return process.env.AUTH_API_PORT || 3030
-}
-
-function auth_api_url(path = '') {
-  return normalize_url(`http://${auth_api_host()}:${auth_api_port()}${path}`)
 }
