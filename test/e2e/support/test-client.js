@@ -14,36 +14,22 @@ const users_ui_test_client = {
 export const CLIENT_CREDENTIALS_GRANT_TYPE = 'client_credentials'
 
 export default {
-  token: null,
-
   get(path, options = {}) {
-    if (!this.token) {
-      return users_ui_test_client_credential_token().then(token => {
-        this.token = token
-        return get_with_token(this.token, path, options)
-      })
-    }
-    return get_with_token(this.token, path, options)
+    return users_ui_test_client_credential_token().then(token => {
+      return get_with_token(token, path, options)
+    })
   },
 
   post(path, data, options = {}) {
-    if (!this.token) {
-      return users_ui_test_client_credential_token().then(token => {
-        this.token = token
-        return post_with_token(this.token, path, data, options)
-      })
-    }
-    return post_with_token(this.token, path, data, options)
+    return users_ui_test_client_credential_token().then(token => {
+      return post_with_token(token, path, data, options)
+    })
   },
 
   delete(path, options = {}) {
-    if (!this.token) {
-      return users_ui_test_client_credential_token().then(token => {
-        this.token = token
-        return delete_with_token(this.token, path, options)
-      })
-    }
-    return delete_with_token(this.token, path, options)
+    return users_ui_test_client_credential_token().then(token => {
+      return delete_with_token(token, path, options)
+    })
   }
 }
 

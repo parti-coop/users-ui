@@ -1,3 +1,5 @@
+import R from 'ramda'
+import moment from 'moment'
 import axios from 'axios'
 import qs from 'qs'
 import normalize_url from 'normalize-url'
@@ -21,7 +23,20 @@ export function users_ui_client_credential_token() {
   })
 }
 
+let token_cache = {}
+
+export function clear_token_cache() {
+  token_cache = {}
+}
+
 export function client_credential_token({ client_id, client_secret }) {
+  const cache_key = `${client_id}:${client_secret}`
+  const expires_at = R.pathOr(moment(0), [cache_key, 'expires_at'], token_cache)
+  if (expires_at.isSameOrAfter(moment())) {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(token_cache[cache_key]))
+    })
+  }
   return auth_api_client.post(
     '/v1/tokens',
     { grant_type: CLIENT_CREDENTIALS_GRANT_TYPE },
@@ -32,7 +47,14 @@ export function client_credential_token({ client_id, client_secret }) {
       },
       transformRequest: [ qs.stringify ]
     }
-  ).then(res => res.data)
+  ).then(res => {
+    const token = res.data
+    if (token.expires_in) {
+      token.expires_at = moment().add(token.expires_in - 10, 's')
+      token_cache[cache_key] = token
+    }
+    return token
+  })
 }
 
 function auth_api_host() {
