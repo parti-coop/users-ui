@@ -11,9 +11,9 @@ const environment = {
 
 module.exports = Object.assign({
   host: process.env.HOST || 'localhost',
-  port: process.env.PORT || 8080,
+  port: process.env.PORT && parseInt(process.env.PORT, 10) || 8080,
   apiHost: process.env.APIHOST || 'localhost',
-  apiPort: process.env.APIPORT || 3030,
+  apiPort: process.env.APIPORT && parseInt(process.env.APIPORT, 10) || 3030,
   app: {
     title: 'React Redux Example',
     description: 'All the modern best practices in one example.',

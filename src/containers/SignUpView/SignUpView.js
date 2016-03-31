@@ -17,7 +17,7 @@ const onSignUpSubmit = fields => dispatch => {
     onError: err => {
       const messages = R.pathOr([err.message], ['errors', 'full_messages'], err)
       messages.forEach(message => {
-        dispatch(notifActions.notifSend({ message, kind: 'warning', dismissAfter: 5000 }))
+        dispatch(notifActions.notifSend({ message, kind: 'warning', dismissAfter: 0 }))
       })
     }
   })

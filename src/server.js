@@ -41,6 +41,8 @@ applyMiddleware(app)
 app.use('/api', (req, res) => {
   users_ui_client_credential_token().then(token => {
     proxy.web(req, res, { token })
+  }).catch(err => {
+    console.error(err)
   })
 })
 

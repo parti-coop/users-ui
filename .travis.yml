@@ -16,6 +16,10 @@ sudo: required
 services:
   - docker
 
+addons:
+  hosts:
+    - auth-api
+
 before_install:
   - sudo service postgresql stop
   - docker-compose -v
@@ -28,8 +32,7 @@ install:
 
 before_script:
   - openssl aes-256-cbc -d -k $secret -in .env.enc -a -out .env
-  - cat .env.enc
-  - source .env.enc; rm -f .env.enc
+  - source .env; rm -f .env
 
 script:
   - docker-compose -f deploy/docker-compose-test.yml up -d db
@@ -38,14 +41,18 @@ script:
   - docker-compose -f deploy/docker-compose-test.yml run --rm users-api bin/rails db:setup
   - docker-compose -f deploy/docker-compose-test.yml up -d users-api
 
+  - npm run test-node
+
   - export APP_VERSION=`git describe  --tags --long || echo ${TRAVIS_COMMIT::12}`
   - echo "building $USERS_UI_REPO:$APP_VERSION"
-  - docker build -t $USERS_UI_REPO:$APP_VERSION .
-  - docker tag ${USERS_UI_REPO}:${APP_VERSION} $USERS_UI_REPO:current
-  - docker-compose -f deploy/docker-compose-test.yml up -d users-ui
+  - ./deploy/build-docker-image.bash
+
+  - AUTH_API_CONTAINER=$( docker-compose -f deploy/docker-compose-test.yml ps -q auth-api )
+  - docker inspect --format '{{ .NetworkSettings.IPAddress }}' $AUTH_API_CONTAINER
+  - docker-compose -f deploy/docker-compose-test.yml up users-ui &
   - sleep 3
   - docker-compose -f deploy/docker-compose-test.yml ps
-  - npm run test-e2e
+  - APIPORT=3031 npm run test-e2e
 
 after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
