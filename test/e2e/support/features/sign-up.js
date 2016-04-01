@@ -17,7 +17,7 @@ export function sign_up(browser, {email, password}) {
 export function user_should_see_sign_up_confirmation_sent_page(browser) {
   return new Promise(resolve => {
     browser.wait(() => {
-      return document.location.pathname === '/sign-up-confirmation-sent'
+      return document.location.pathname === '/sign-up/confirmation-sent'
     }).then(() => {
       resolve()
     })

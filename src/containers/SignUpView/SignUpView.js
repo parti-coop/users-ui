@@ -13,7 +13,7 @@ const onSignUpSubmit = fields => dispatch => {
   const sign_up_action = sign_up({
     email,
     password,
-    onSuccess: res => dispatch(push('/sign-up-confirmation-sent')),
+    onSuccess: res => dispatch(push('/sign-up/confirmation-sent')),
     onError: err => {
       const messages = R.pathOr([err.message], ['errors', 'full_messages'], err)
       messages.forEach(message => {
