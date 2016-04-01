@@ -5,8 +5,11 @@ import Navbar from 'react-bootstrap/lib/Navbar'
 import Nav from 'react-bootstrap/lib/Nav'
 import NavItem from 'react-bootstrap/lib/NavItem'
 import Helmet from 'react-helmet'
-import config from '../../config'
+import { Notifs } from 're-notif'
 import { asyncConnect } from 'redux-async-connect'
+
+import { AlertMessage } from '../../components'
+import config from '../../config'
 
 @asyncConnect([{
   promise: ({store: {dispatch, getState}}) => {
@@ -57,6 +60,7 @@ export default class App extends Component {
           </Navbar.Collapse>
         </Navbar>
 
+        <Notifs CustomComponent={AlertMessage}/>
         <div className={styles.appContent}>
           {this.props.children}
         </div>

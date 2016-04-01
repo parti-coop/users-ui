@@ -15,7 +15,7 @@ const onSignUpSubmit = fields => dispatch => {
     password,
     onSuccess: res => dispatch(push('/sign-up-confirmation-sent')),
     onError: err => {
-      const messages = R.pathOr([err.statusText], ['data', 'errors', 'full_messages'], err)
+      const messages = R.pathOr([err.message], ['errors', 'full_messages'], err)
       messages.forEach(message => {
         dispatch(notifActions.notifSend({ message, kind: 'warning', dismissAfter: 5000 }))
       })
