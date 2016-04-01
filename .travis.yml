@@ -47,11 +47,10 @@ script:
   - echo "building $USERS_UI_REPO:$APP_VERSION"
   - ./deploy/build-docker-image.bash
 
-  - AUTH_API_CONTAINER=$( docker-compose -f deploy/docker-compose-test.yml ps -q auth-api )
-  - docker inspect --format '{{ .NetworkSettings.IPAddress }}' $AUTH_API_CONTAINER
   - docker-compose -f deploy/docker-compose-test.yml up users-ui &
   - sleep 3
   - docker-compose -f deploy/docker-compose-test.yml ps
+
   - APIPORT=3031 npm run test-e2e
 
 after_success:
