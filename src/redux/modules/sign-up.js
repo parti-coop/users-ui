@@ -1,5 +1,4 @@
 import { handleActions } from 'redux-actions'
-import { users_ui_url } from '../../utils/parti-url'
 
 const SIGN_UP_REQUEST = 'users-ui/sign-up/REQUEST'
 const SIGN_UP_SUCCESS = 'users-ui/sign-up/SUCCESS'
@@ -27,7 +26,7 @@ export const sign_up = ({ email, password, onSuccess, onError }) => ({
     const data = {
       email,
       password,
-      confirm_success_url: users_ui_url('/sign-up/confirmation-done')
+      confirm_success_url: window.location.origin + '/sign-up/confirmation-done'
     }
     return client.post('/v1/users', { data }).then(res => {
       if (onSuccess) {
