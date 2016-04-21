@@ -9,10 +9,11 @@ import { SignUpForm } from '../../components'
 import { sign_up } from '../../redux/modules/sign-up'
 
 const onSignUpSubmit = fields => dispatch => {
-  const { email, password } = R.pick(['email', 'password'], fields)
+  const { email, password, nickname } = fields
   const sign_up_action = sign_up({
     email,
     password,
+    nickname,
     onSuccess: res => dispatch(push('/sign-up/confirmation-sent')),
     onError: err => {
       const messages = R.pathOr([err.message], ['errors', 'full_messages'], err)

@@ -1,10 +1,11 @@
 import { users_ui_url } from '../../../../src/utils/parti-url'
 
-export function sign_up(browser, {email, password}) {
+export function sign_up(browser, {email, nickname, password}) {
   return new Promise(resolve => {
     browser
     .goto(users_ui_url('/sign-up'))
     .type('input[label="Email"]', email)
+    .type('input[label="Nickname"]', nickname)
     .type('input[label="Password"]', password)
     .type('input[label="Password Confirmation"]', password)
     .click('input[value="Sign Up"]')

@@ -31,11 +31,13 @@ feature('Signs up', () => {
     })
     yield sign_up(browser, {
       email: 'user@email.com',
-      password: 'Passw0rd!'
+      password: 'Passw0rd!',
+      nickname: 'user-nickname',
     })
     yield user_should_see_sign_up_confirmation_sent_page(browser)
     yield user_should_exist({
-      email: 'user@email.com'
+      email: 'user@email.com',
+      nickname: 'user-nickname'
     })
   })
 

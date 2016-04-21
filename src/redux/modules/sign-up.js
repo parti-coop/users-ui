@@ -20,12 +20,13 @@ export const reducer = handleActions({
   })
 }, initial_state)
 
-export const sign_up = ({ email, password, onSuccess, onError }) => ({
+export const sign_up = ({ email, password, nickname, onSuccess, onError }) => ({
   types: [SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAIL],
   promise: client => new Promise((resolve, reject) => {
     const data = {
       email,
       password,
+      nickname,
       confirm_success_url: window.location.origin + '/sign-up/confirmation-done'
     }
     return client.post('/v1/users', { data }).then(res => {

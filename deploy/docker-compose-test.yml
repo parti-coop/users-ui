@@ -4,7 +4,7 @@ auth-api:
     - RAILS_ENV
     - RAILS_LOG_TO_STDOUT=true
     - SECRET_KEY_BASE
-  image: partixyz/auth-api:0.3.1-24-gebe9713
+  image: partixyz/auth-api:0.3.3-14-gd9d655d
   links:
     - db:auth-db
   ports:
@@ -26,7 +26,7 @@ users-api:
     - USERS_API_CLIENT_SECRET
     - USERS_API_EXTERNAL_HOST
     - USERS_API_EXTERNAL_PORT
-  image: partixyz/users-api:0.2.0-14-g2baefb1
+  image: partixyz/users-api:0.2.1-16-gd48cfc6
   links:
     - db:users-db
     - auth-api

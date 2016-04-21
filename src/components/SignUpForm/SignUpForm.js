@@ -12,7 +12,7 @@ class SignUpForm extends React.Component {
 
   render() {
     const {
-      fields: {email, password, passwordConfirmation},
+      fields: {email, nickname, password, passwordConfirmation},
       handleSubmit
     } = this.props
 
@@ -20,6 +20,7 @@ class SignUpForm extends React.Component {
       <Panel header="Sign Up" bsStyle="info">
         <form className={SignUpFormClassName} onSubmit={handleSubmit}>
           <Input type="email" label="Email" placeholder="Enter email..." {...email} />
+          <Input type="text" label="Nickname" placeholder="Enter Nickname..." {...nickname} />
           <Input type="password" label="Password" placeholder="Enter password..." {...password} />
           <Input type="password" label="Password Confirmation" placeholder="Enter password again..." {...passwordConfirmation} />
           <ButtonInput type="submit" value="Sign Up" bsStyle="primary" />
@@ -31,7 +32,7 @@ class SignUpForm extends React.Component {
 
 const SignUpReduxForm = reduxForm({
   form: 'signUp',
-  fields: ['email', 'password', 'passwordConfirmation']
+  fields: ['email', 'nickname', 'password', 'passwordConfirmation']
 })(SignUpForm)
 
 export default SignUpReduxForm
