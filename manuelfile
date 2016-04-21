@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+DOCKER_COMPOSE_FILE=deploy/docker-compose-deps.yml
+
+deps() {
+  deploy/docker-compose-up-deps.bash
+}
+
+down() {
+  docker-compose -f ${DOCKER_COMPOSE_FILE} down
+}
+
+logs() {
+  docker-compose -f ${DOCKER_COMPOSE_FILE} logs -f
+}
+
+ps() {
+  docker-compose -f ${DOCKER_COMPOSE_FILE} ps
+}
+
+users-api() {
+  docker-compose -f ${DOCKER_COMPOSE_FILE} run --rm users-api "$@"
+}
